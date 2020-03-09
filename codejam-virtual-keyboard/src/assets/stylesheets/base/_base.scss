@@ -1,0 +1,19 @@
+// -----------------------------------------------------------------------------
+// This file contains very basic styles.
+// -----------------------------------------------------------------------------
+
+body{
+
+}
+
+a{
+  text-decoration: none;
+  outline: 0;
+}
+
+.page-wrapper {
+
+  margin: auto; 
+  max-width: $max-width; 
+
+}
