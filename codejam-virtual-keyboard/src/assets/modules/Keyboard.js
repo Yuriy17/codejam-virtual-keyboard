@@ -1,3 +1,5 @@
+import { createElement } from './utils';
+
 class Keyboard {
   constructor() {
     this.elements = {
@@ -18,6 +20,15 @@ class Keyboard {
   }
 
   init(node) {
+    // Create main elements
+    this.elements.main = node;
+    this.elements.keysContainer = createElement('div', 'keyboard');
+
+    this.elements.keysContainer.appendChild(this._createKeys());
+  }
+
+
+  _createKeys() {
 
   }
 }
