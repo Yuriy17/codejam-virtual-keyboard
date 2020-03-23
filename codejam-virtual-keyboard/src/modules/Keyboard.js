@@ -1,7 +1,12 @@
 import { createElement } from '../utils';
-
+import '../buttons';
+/* // imagine we had a method to get language from cookies or other storage
+const language = detectVisitorLanguage();
+import(`./locale/${language}.json`).then(module => {
+  // do something with the translations
+}); */
 class Keyboard {
-  constructor() {
+  constructor(language) {
     this.elements = {
       main: null,
       keysContainer: null,
@@ -14,9 +19,12 @@ class Keyboard {
     };
 
     this.properties = {
+      language,
       value: '',
       capsLock: false,
     };
+
+    return this.init();
   }
 
   init(node) {

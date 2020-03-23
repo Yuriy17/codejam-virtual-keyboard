@@ -7,7 +7,7 @@ module.exports = {
     "parser": "babel-eslint",
     "extends": "airbnb-base",
     "rules": {
-        "max-len": [1, 70, 2, { "ignoreComments": true }],
+        "max-len": [1, 110, 2, { "ignoreComments": true }],
         "camelcase": "warn",
         "linebreak-style": 0
       }
