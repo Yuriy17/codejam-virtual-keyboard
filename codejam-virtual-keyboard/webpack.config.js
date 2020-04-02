@@ -57,41 +57,23 @@ module.exports = {
           name: '[name].[ext]',
         },
       }],
-    }, {
-      test: /\.(js|jsx)$/,
-      include: path.resolve(__dirname, 'src/assets/scripts'),
-      use: [{
-        loader: 'babel-loader',
-        options: {
-          presets: ['@babel/preset-env'],
-        },
-      },
-      {
-        loader: 'eslint-loader',
-      },
-      ],
     },
     {
-      test: /\.m?js$/,
+      test: /\.(js|jsx)$/,
       exclude: /(node_modules|bower_components)/,
       use: {
         loader: 'babel-loader',
         options: {
           presets: ['@babel/preset-env'],
-          plugins: ['@babel/plugin-proposal-object-rest-spread'],
+          plugins: ['@babel/plugin-proposal-object-rest-spread', '@babel/plugin-proposal-private-methods'],
         },
       },
     },
     {
       enforce: 'pre',
-      test: /\.js$/,
+      test: /\.(js|jsx)$/,
       exclude: /node_modules/,
       loader: 'eslint-loader',
-    },
-    {
-      test: /\.js$/,
-      exclude: /node_modules/,
-      loader: 'babel-loader',
     },
     ],
   },
