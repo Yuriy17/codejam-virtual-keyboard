@@ -1,11 +1,11 @@
-import createElement from '../utils';
-import buttons from '../buttons.json';
+import { createElement } from '../utils';
+import database from '../buttons';
 
 class Keyboard {
   constructor(language) {
     this.elements = {
       keysContainer: null,
-      keys: buttons,
+      keys: database.buttons,
     };
 
     this.eventHandlers = {
@@ -33,6 +33,8 @@ class Keyboard {
     const nodeItems = [];
     const { language } = this.properties;
     nodeItems.push(createElement('div', 'keyboard__row'));
+    console.log(Array.isArray(this.elements.keys));
+
     this.elements.keys.forEach((element) => {
       if (element.code === 'Backspace'
         || element.code === 'Enter'

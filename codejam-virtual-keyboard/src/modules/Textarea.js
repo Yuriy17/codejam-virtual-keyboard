@@ -1,4 +1,4 @@
-import createElement from '../utils';
+import { createElement } from '../utils';
 
 export default class Textarea {
   // eslint-disable-next-line class-methods-use-this

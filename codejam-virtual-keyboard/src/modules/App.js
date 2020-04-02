@@ -1,4 +1,4 @@
-import createElement from '../utils';
+import { createElement } from '../utils';
 import Keyboard from './Keyboard';
 import Textarea from './Textarea';
 

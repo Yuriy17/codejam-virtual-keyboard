@@ -49,11 +49,21 @@ module.exports = {
       }],
     },
     {
+      test: /\.ico$/i,
+      include: path.resolve(__dirname, 'src'),
+      use: [{
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+        },
+      }],
+    },
+    {
       test: /\.(png|jpe?g|gif)$/i,
       use: [{
         loader: 'file-loader',
         options: {
-          outputPath: 'assets/img',
+          outputPath: 'assets/images',
           name: '[name].[ext]',
         },
       }],

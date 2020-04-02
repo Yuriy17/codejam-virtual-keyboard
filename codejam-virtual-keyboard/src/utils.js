@@ -5,4 +5,5 @@ function createElement(tag, ...classes) {
 }
 
 
-export default { createElement };
+// eslint-disable-next-line import/prefer-default-export
+export { createElement };
