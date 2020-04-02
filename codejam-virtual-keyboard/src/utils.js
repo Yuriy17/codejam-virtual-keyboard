@@ -4,4 +4,5 @@ function createElement(tag, ...classes) {
   return element;
 }
 
-export { createElement };
+
+export default { createElement };
