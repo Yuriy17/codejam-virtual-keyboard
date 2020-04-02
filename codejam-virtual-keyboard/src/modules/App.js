@@ -1,17 +1,18 @@
-import { createElement } from '../utils';
+import createElement from '../utils';
 import Keyboard from './Keyboard';
 import Textarea from './Textarea';
 
 export default class App {
-  constructor(node) {
-    this.body = node;
+  init(language) {
+    this.TEXTAREA = new Textarea();
+    this.KEYBOARD = new Keyboard(language);
+    this.KEYBOARD.init();
+    this.TEXTAREA.init();
   }
 
-  init() {
-    document.getElementsByTagName('HEAD').insertAdjacentHTML('beforeend',
-      '<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">');
+  render(node) {
     const MAIN = createElement('main', 'main');
-    MAIN.append(new Textarea(), new Keyboard('ENGLISH'));
-    this.body.appendChild(MAIN);
+    MAIN.append(this.TEXTAREA.render(10), this.KEYBOARD.render());
+    node.appendChild(MAIN);
   }
 }

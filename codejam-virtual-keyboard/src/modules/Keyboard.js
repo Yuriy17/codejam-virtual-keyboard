@@ -1,16 +1,11 @@
-import { createElement } from '../utils';
-import '../buttons';
-/* // imagine we had a method to get language from cookies or other storage
-const language = detectVisitorLanguage();
-import(`./locale/${language}.json`).then(module => {
-  // do something with the translations
-}); */
+import createElement from '../utils';
+import buttons from '../buttons.json';
+
 class Keyboard {
   constructor(language) {
     this.elements = {
-      main: null,
       keysContainer: null,
-      keys: [],
+      keys: buttons,
     };
 
     this.eventHandlers = {
@@ -23,21 +18,37 @@ class Keyboard {
       value: '',
       capsLock: false,
     };
-
-    return this.init();
   }
 
-  init(node) {
-    // Create main elements
-    this.elements.main = node;
+  init() {
     this.elements.keysContainer = createElement('div', 'keyboard');
-
-    this.elements.keysContainer.appendChild(this._createKeys());
   }
 
+  render() {
+    this.elements.keysContainer.append(...this._createKeys());
+    return this.elements.keysContainer;
+  }
 
   _createKeys() {
-
+    const nodeItems = [];
+    const { language } = this.properties;
+    nodeItems.push(createElement('div', 'keyboard__row'));
+    this.elements.keys.forEach((element) => {
+      if (element.code === 'Backspace'
+        || element.code === 'Enter'
+        || element.code === 'ShiftRight'
+        || element.code === 'IntlBackslash') {
+        const button = createElement('button', 'keyboard__key');
+        button.innerHTML = element[language];
+        nodeItems[nodeItems.length - 1].append(button);
+        nodeItems.push(createElement('div', 'keyboard__row'));
+      } else {
+        const button = createElement('button', 'keyboard__key');
+        button.innerHTML = 'a';
+        nodeItems[nodeItems.length - 1].append(button);
+      }
+    });
+    return nodeItems;
   }
 }
 
