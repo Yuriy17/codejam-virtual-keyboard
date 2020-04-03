@@ -26,31 +26,31 @@ const buttons = [
   {
     type: 'CHAR',
     ENGLISH: { default: '4', shift: '$' },
-    RUSSIAN: { default: '4', shift: '%' },
+    RUSSIAN: { default: '4', shift: ';' },
     code: 'Digit4',
   },
   {
     type: 'CHAR',
     ENGLISH: { default: '5', shift: '%' },
-    RUSSIAN: { default: '5', shift: ':' },
+    RUSSIAN: { default: '5', shift: '%' },
     code: 'Digit5',
   },
   {
     type: 'CHAR',
     ENGLISH: { default: '6', shift: '^' },
-    RUSSIAN: { default: '6', shift: ',' },
+    RUSSIAN: { default: '6', shift: ':' },
     code: 'Digit6',
   },
   {
     type: 'CHAR',
     ENGLISH: { default: '7', shift: '&' },
-    RUSSIAN: { default: '7', shift: '.' },
+    RUSSIAN: { default: '7', shift: '?' },
     code: 'Digit7',
   },
   {
     type: 'CHAR',
     ENGLISH: { default: '8', shift: '*' },
-    RUSSIAN: { default: '8', shift: ';' },
+    RUSSIAN: { default: '8', shift: '*' },
     code: 'Digit8',
   },
   {
@@ -161,10 +161,12 @@ const buttons = [
     RUSSIAN: { default: 'ъ', shift: 'Ъ' },
     code: 'BracketRight',
   },
+
   {
-    type: 'NAVIGATION',
-    code: 'Enter',
-    title: 'Enter',
+    type: 'CHAR',
+    ENGLISH: { default: '\\', shift: '|' },
+    RUSSIAN: { default: '\\', shift: '/' },
+    code: 'Backslash',
   },
   {
     type: 'CONTROL',
@@ -238,22 +240,17 @@ const buttons = [
     code: 'Quote',
   },
   {
-    type: 'CHAR',
-    ENGLISH: { default: '\\', shift: '|' },
-    RUSSIAN: { default: 'ё', shift: 'Ё' },
-    code: 'Backslash',
+    type: 'NAVIGATION',
+    code: 'Enter',
+    title: 'Enter',
   },
+
   {
     type: 'CONTROL',
     code: 'ShiftLeft',
     title: 'Shift',
   },
-  {
-    type: 'CHAR',
-    ENGLISH: { default: '`', shift: '~' },
-    RUSSIAN: { default: ']', shift: '[' },
-    code: 'IntlBackslash',
-  },
+
   {
     type: 'CHAR',
     ENGLISH: { default: 'z', shift: 'Z' },
@@ -311,7 +308,7 @@ const buttons = [
   {
     type: 'CHAR',
     ENGLISH: { default: '/', shift: '?' },
-    RUSSIAN: { default: '/', shift: '?' },
+    RUSSIAN: { default: '.', shift: ',' },
     code: 'Slash',
   },
   {
@@ -344,13 +341,13 @@ const buttons = [
   },
   {
     type: 'CONTROL',
-    code: 'MetaRight',
-    title: 'OS',
+    code: 'AltRight',
+    title: 'Alt',
   },
   {
     type: 'CONTROL',
-    code: 'AltRight',
-    title: 'Alt',
+    code: 'ControlRight',
+    title: 'Ctrl',
   },
   {
     type: 'NAVIGATION',
