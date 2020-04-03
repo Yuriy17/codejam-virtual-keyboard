@@ -1,8 +1,8 @@
 const buttons = [
   {
     type: 'CHAR',
-    ENGLISH: { default: '§', shift: '±' },
-    RUSSIAN: { default: '>', shift: '<' },
+    ENGLISH: { default: '`', shift: '~' },
+    RUSSIAN: { default: 'ё', shift: 'Ё' },
     code: 'Backquote',
   },
   {
@@ -322,18 +322,19 @@ const buttons = [
   {
     type: 'CONTROL',
     code: 'ControlLeft',
-    title: 'Control',
+    title: 'Ctrl',
+  },
+  {
+    type: 'CONTROL',
+    code: 'MetaLeft',
+    title: 'OS',
   },
   {
     type: 'CONTROL',
     code: 'AltLeft',
     title: 'Alt',
   },
-  {
-    type: 'CONTROL',
-    code: 'MetaLeft',
-    title: 'Cmd',
-  },
+
   {
     type: 'CHAR',
     ENGLISH: { default: ' ', shift: ' ' },
@@ -344,7 +345,7 @@ const buttons = [
   {
     type: 'CONTROL',
     code: 'MetaRight',
-    title: 'Cmd',
+    title: 'OS',
   },
   {
     type: 'CONTROL',

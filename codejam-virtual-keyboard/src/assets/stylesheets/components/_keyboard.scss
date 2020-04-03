@@ -2,7 +2,7 @@
   background-color: #0F4C81;
 
   &__key {
-    width: 50px;
+    
     height: 40px;
     margin-right: 7px;
     font-size: 18px;
@@ -20,7 +20,22 @@
     }
   }
 
+  &__key-small {
+    width: 50px;
+  }
+  &__key-medium {
+    width: 100px;
+  }
+  &__key-large {
+    width: 150px;
+  }
+  &__key-space {
+    width: 340px;
+  }
+
   &__row{
     margin: 8px 0;
+    display: flex;
+    justify-content: center;
   }
 }

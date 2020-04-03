@@ -31,23 +31,50 @@ class Keyboard {
 
   _createKeys() {
     const nodeItems = [];
+    /*     const {
+      Backspace, Enter, ShiftRight, IntlBackslash,
+    } = DELIMiTER_KEYS; */
     const { language } = this.properties;
     nodeItems.push(createElement('div', 'keyboard__row'));
-    console.log(Array.isArray(this.elements.keys));
 
     this.elements.keys.forEach((element) => {
-      if (element.code === 'Backspace'
-        || element.code === 'Enter'
-        || element.code === 'ShiftRight'
-        || element.code === 'IntlBackslash') {
-        const button = createElement('button', 'keyboard__key');
-        button.innerHTML = element[language];
-        nodeItems[nodeItems.length - 1].append(button);
-        nodeItems.push(createElement('div', 'keyboard__row'));
-      } else {
-        const button = createElement('button', 'keyboard__key');
-        button.innerHTML = 'a';
-        nodeItems[nodeItems.length - 1].append(button);
+      const button = createElement('button', 'keyboard__key');
+      nodeItems[nodeItems.length - 1].append(button);
+      switch (element.type) {
+        case 'CONTROL':
+          button.innerHTML = element.title;
+          if (element.code === 'ShiftRight') {
+            button.classList.add('keyboard__key-medium');
+            nodeItems.push(createElement('div', 'keyboard__row'));
+          } else if (element.code === 'ShiftRight' || element.code === 'CapsLock') {
+            button.classList.add('keyboard__key-medium');
+          } else {
+            button.classList.add('keyboard__key-small');
+          }
+          break;
+        case 'NAVIGATION':
+          button.innerHTML = element.title;
+          if (element.code === 'Backspace' || element.code === 'Enter') {
+            button.classList.add('keyboard__key-large');
+            nodeItems.push(createElement('div', 'keyboard__row'));
+          } else {
+            button.classList.add('keyboard__key-small');
+          }
+          break;
+        case 'CHAR':
+          button.innerHTML = element[language].default;
+          if (element.code === 'IntlBackslash') {
+            nodeItems.push(createElement('div', 'keyboard__row'));
+            button.classList.add('keyboard__key-small');
+          } else if (element.code === 'Space') {
+            button.classList.add('keyboard__key-space');
+          } else {
+            button.classList.add('keyboard__key-small');
+          }
+          break;
+
+        default:
+          break;
       }
     });
     return nodeItems;
