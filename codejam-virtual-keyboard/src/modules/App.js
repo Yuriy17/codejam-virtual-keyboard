@@ -18,7 +18,12 @@ export default class App {
   activate() {
     document.addEventListener('DOMContentLoaded', () => {
       // this.TEXTAREA.activate();
-      this.KEYBOARD.activate();
+      document.addEventListener('keydown', (event) => {
+        this.KEYBOARD.keyDown(event);
+      });
+      document.addEventListener('keyup', (event) => {
+        this.KEYBOARD.keyUp(event);
+      });
     });
   }
 }

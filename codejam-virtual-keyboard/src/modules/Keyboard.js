@@ -110,21 +110,34 @@ class Keyboard {
     return nodeRows;
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  activate() {
-    document.addEventListener('keydown', (event) => {
-      this.elements.keys.forEach((element, index) => {
-        if (element.code === event.code) {
-          this.elements.keysNodes[index].classList.add('keyboard__key-pressed');
-        }
-      });
+  keyDown(event) {
+    this.elements.keys.forEach((element, index) => {
+      if (element.code === event.code) {
+        this.elements.keysNodes[index].classList.add('keyboard__key-pressed');
+      }
+      if ((event.code === 'ShiftLeft' && event.altKey)
+      || (event.code === 'ShiftRight' && event.altKey)) {
+        this.changeLanguage();
+      }
     });
-    document.addEventListener('keyup', (event) => {
-      this.elements.keys.forEach((element, index) => {
-        if (element.code === event.code) {
-          this.elements.keysNodes[index].classList.remove('keyboard__key-pressed');
-        }
-      });
+  }
+
+  keyUp(event) {
+    this.elements.keys.forEach((element, index) => {
+      if (element.code === event.code) {
+        this.elements.keysNodes[index].classList.remove('keyboard__key-pressed');
+      }
+    });
+  }
+
+
+  changeLanguage() {
+    this.properties.language = this.properties.language === 'ENGLISH' ? 'RUSSIAN' : 'ENGLISH';
+    const { language } = this.properties;
+    this.elements.keys.forEach((element, index) => {
+      if (element[language]) {
+        this.elements.keysNodes[index].innerHTML = element[language].default;
+      }
     });
   }
 }
