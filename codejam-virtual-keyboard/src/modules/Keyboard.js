@@ -6,6 +6,7 @@ class Keyboard {
     this.elements = {
       keysContainer: null,
       keys: database.buttons,
+      keysNodes: [],
     };
 
     this.eventHandlers = {
@@ -20,30 +21,33 @@ class Keyboard {
     };
   }
 
-  init() {
-    this.elements.keysContainer = createElement('div', 'keyboard');
-  }
 
   render() {
+    const keyboardFragment = document.createDocumentFragment();
+    this.elements.keysContainer = createElement('div', 'keyboard');
     this.elements.keysContainer.append(...this._createKeys());
-    return this.elements.keysContainer;
+    keyboardFragment.append(this.elements.keysContainer);
+    return keyboardFragment;
   }
 
   _createKeys() {
-    const nodeItems = [];
+    const nodeRows = [];
     const { language } = this.properties;
-    nodeItems.push(createElement('div', 'keyboard__row'));
+
+    nodeRows.push(createElement('div', 'keyboard__row'));
 
     this.elements.keys.forEach((element) => {
       const button = createElement('button', 'keyboard__key');
+      this.elements.keysNodes.push(button);
+      const currentRow = nodeRows[nodeRows.length - 1];
 
       switch (element.type) {
         case 'CONTROL':
           button.innerHTML = element.title;
-          nodeItems[nodeItems.length - 1].append(button);
+          currentRow.append(button);
           if (element.code === 'ShiftRight') {
             button.classList.add('keyboard__key-medium');
-            nodeItems.push(createElement('div', 'keyboard__row'));
+            nodeRows.push(createElement('div', 'keyboard__row'));
           } else if (element.code === 'ShiftLeft' || element.code === 'CapsLock') {
             button.classList.add('keyboard__key-medium');
           } else {
@@ -53,27 +57,27 @@ class Keyboard {
 
         case 'NAVIGATION':
           if (element.code === 'Backspace' || element.code === 'Enter') {
-            nodeItems[nodeItems.length - 1].append(button);
+            currentRow.append(button);
             button.classList.add('keyboard__key-large');
             button.innerHTML = element.title;
-            nodeItems.push(createElement('div', 'keyboard__row'));
+            nodeRows.push(createElement('div', 'keyboard__row'));
           } else {
             button.classList.add('keyboard__key-small');
             let arrow;
             if (element.code === 'ArrowLeft') {
               arrow = 'arrow_left';
-              nodeItems[nodeItems.length - 1].append(button);
+              currentRow.append(button);
             } else if (element.code === 'ArrowRight') {
               arrow = 'arrow_right';
-              nodeItems[nodeItems.length - 1].append(button);
+              currentRow.append(button);
             } else if (element.code === 'ArrowUp') {
               arrow = 'arrow_drop_up';
               const keyBlock = createElement('div', 'keyboard__key-block');
               keyBlock.append(button);
-              nodeItems[nodeItems.length - 1].append(keyBlock);
+              currentRow.append(keyBlock);
             } else if (element.code === 'ArrowDown') {
               arrow = 'arrow_drop_down';
-              nodeItems[nodeItems.length - 1].lastChild.append(button);
+              currentRow.lastChild.append(button);
             }
             const icon = createElement('i', 'material-icons');
             icon.innerHTML = arrow;
@@ -83,9 +87,9 @@ class Keyboard {
           break;
 
         case 'CHAR':
-          nodeItems[nodeItems.length - 1].append(button);
+          currentRow.append(button);
           if (element.code === 'Backslash') {
-            nodeItems.push(createElement('div', 'keyboard__row'));
+            nodeRows.push(createElement('div', 'keyboard__row'));
             button.classList.add('keyboard__key-small');
           } else if (element.code === 'Space') {
             button.classList.add('keyboard__key-space');
@@ -103,7 +107,25 @@ class Keyboard {
           break;
       }
     });
-    return nodeItems;
+    return nodeRows;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  activate() {
+    document.addEventListener('keydown', (event) => {
+      this.elements.keys.forEach((element, index) => {
+        if (element.code === event.code) {
+          this.elements.keysNodes[index].classList.add('keyboard__key-pressed');
+        }
+      });
+    });
+    document.addEventListener('keyup', (event) => {
+      this.elements.keys.forEach((element, index) => {
+        if (element.code === event.code) {
+          this.elements.keysNodes[index].classList.remove('keyboard__key-pressed');
+        }
+      });
+    });
   }
 }
 

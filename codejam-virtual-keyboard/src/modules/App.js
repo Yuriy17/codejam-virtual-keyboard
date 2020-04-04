@@ -6,13 +6,19 @@ export default class App {
   init(language) {
     this.TEXTAREA = new Textarea();
     this.KEYBOARD = new Keyboard(language);
-    this.KEYBOARD.init();
-    this.TEXTAREA.init();
   }
 
   render(node) {
-    const MAIN = createElement('main', 'main');
-    MAIN.append(this.TEXTAREA.render(10), this.KEYBOARD.render());
-    node.appendChild(MAIN);
+    this.MAIN = createElement('main', 'main');
+    this.MAIN.append(this.TEXTAREA.render(10), this.KEYBOARD.render());
+    node.appendChild(this.MAIN);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  activate() {
+    document.addEventListener('DOMContentLoaded', () => {
+      // this.TEXTAREA.activate();
+      this.KEYBOARD.activate();
+    });
   }
 }
