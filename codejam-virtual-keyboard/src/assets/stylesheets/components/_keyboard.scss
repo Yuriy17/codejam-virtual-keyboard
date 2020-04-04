@@ -2,6 +2,7 @@
   background-color: #0F4C81;
   padding: 1%;
   margin-top: 5%;
+
   &__key {
     display: flex;
     justify-content: center;
@@ -17,36 +18,44 @@
     box-shadow: 2px 2px 10px rgba(13, 16, 61, 0.5);
     cursor: pointer;
     user-select: none;
+    
     &:hover{
       background: rgba(255, 255, 255, 0.4);
     }
+    
     .arrow{
       height: 10px;
     }
-  }
 
-  &__key-block{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    & > .keyboard__key {
-      height: 22px;
+    &-block{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      & > .keyboard__key {
+        height: 22px;
+      }
+    }
+  
+    &-small {
+      width: 50px;
+    }
+    &-medium {
+      width: 100px;
+      min-width: 92px;
+    }
+    &-large {
+      width: 120px;
+    }
+    &-space {
+      width: 340px;
+    }
+    &-pressed{
+
+      background-color: #4ec5a5;
     }
   }
 
-  &__key-small {
-    width: 50px;
-  }
-  &__key-medium {
-    width: 100px;
-    min-width: 92px;
-  }
-  &__key-large {
-    width: 120px;
-  }
-  &__key-space {
-    width: 340px;
-  }
+
 
   &__row{
     margin: 8px 0;
