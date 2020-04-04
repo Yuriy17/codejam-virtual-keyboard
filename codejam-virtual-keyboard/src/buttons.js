@@ -169,6 +169,11 @@ const buttons = [
     code: 'Backslash',
   },
   {
+    type: 'NAVIGATION',
+    code: 'Delete',
+    title: 'Del',
+  },
+  {
     type: 'CONTROL',
     code: 'CapsLock',
     title: 'Caps lock',

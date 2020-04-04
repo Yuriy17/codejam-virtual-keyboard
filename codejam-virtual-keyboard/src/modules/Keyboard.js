@@ -56,9 +56,9 @@ class Keyboard {
           break;
 
         case 'NAVIGATION':
-          if (element.code === 'Backspace' || element.code === 'Enter') {
+          if (element.code === 'Backspace' || element.code === 'Enter' || element.code === 'Delete') {
             currentRow.append(button);
-            button.classList.add('keyboard__key-large');
+            button.classList.add(element.code === 'Delete' ? 'keyboard__key-small' : 'keyboard__key-large');
             button.innerHTML = element.title;
             nodeRows.push(createElement('div', 'keyboard__row'));
           } else {
@@ -88,10 +88,7 @@ class Keyboard {
 
         case 'CHAR':
           currentRow.append(button);
-          if (element.code === 'Backslash') {
-            nodeRows.push(createElement('div', 'keyboard__row'));
-            button.classList.add('keyboard__key-small');
-          } else if (element.code === 'Space') {
+          if (element.code === 'Space') {
             button.classList.add('keyboard__key-space');
           } else {
             button.classList.add('keyboard__key-small');
