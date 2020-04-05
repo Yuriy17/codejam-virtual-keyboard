@@ -7,6 +7,7 @@ class Keyboard {
       keysContainer: null,
       keys: database.buttons,
       keysNodes: [],
+      keyPressed: null,
     };
 
     this.eventHandlers = {
@@ -18,6 +19,8 @@ class Keyboard {
       language,
       value: '',
       capsLock: false,
+      altKey: false,
+      shiftKey: false,
     };
   }
 
@@ -43,7 +46,9 @@ class Keyboard {
 
       switch (element.type) {
         case 'CONTROL':
-          button.innerHTML = element.title;
+          button.innerHTML = element.title === 'Language'
+            ? '<i class="material-icons">language</i>' : element.title;
+
           currentRow.append(button);
           if (element.code === 'ShiftRight') {
             button.classList.add('keyboard__key-medium');
@@ -107,29 +112,55 @@ class Keyboard {
     return nodeRows;
   }
 
-  keyDown(event) {
+  keyDown(event, textAreaFocus = false) {
+    const { language, altKey, shiftKey } = this.properties;
     this.elements.keys.forEach((element, index) => {
       if (element.code === event.code) {
         this.elements.keysNodes[index].classList.add('keyboard__key-pressed');
-      }
-      if ((event.code === 'ShiftLeft' && event.altKey)
-      || (event.code === 'ShiftRight' && event.altKey)) {
-        this.changeLanguage();
+
+        if (textAreaFocus) {
+          if (element.type === 'CHAR') {
+            this.elements.keyPressed = element[language].default;
+            console.log(this.elements.keyPressed);
+          }
+        }
       }
     });
+
+    const isCurrentShift = !!(event.code === 'ShiftLeft' || event.code === 'ShiftRight');
+    const isCurrentAlt = !!(event.code === 'AltLeft' || event.code === 'AltRight');
+    if (altKey && !shiftKey && isCurrentShift && event.key === 'GroupNext') {
+      this.properties.shiftKey = true;
+      this.changeLanguage();
+    } else if (shiftKey && !altKey && isCurrentAlt && event.key === 'GroupNext') {
+      this.properties.altKey = true;
+      this.changeLanguage();
+    } else if (isCurrentAlt && !altKey) {
+      this.properties.altKey = true;
+    } else if (isCurrentShift && !shiftKey) {
+      this.properties.shiftKey = true;
+    }
   }
 
   keyUp(event) {
+    const { altKey, shiftKey } = this.properties;
     this.elements.keys.forEach((element, index) => {
       if (element.code === event.code) {
         this.elements.keysNodes[index].classList.remove('keyboard__key-pressed');
       }
     });
+
+    if ((event.code === 'AltLeft' || event.code === 'AltRight') && altKey) {
+      this.properties.altKey = false;
+    } else if ((event.code === 'ShiftLeft' || event.code === 'ShiftRight') && shiftKey) {
+      this.properties.shiftKey = false;
+    }
   }
 
 
   changeLanguage() {
     this.properties.language = this.properties.language === 'ENGLISH' ? 'RUSSIAN' : 'ENGLISH';
+    console.log(this.properties.language);
     const { language } = this.properties;
     this.elements.keys.forEach((element, index) => {
       if (element[language]) {
