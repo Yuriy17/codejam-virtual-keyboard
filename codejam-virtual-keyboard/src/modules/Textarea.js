@@ -1,26 +1,22 @@
 import { createElement } from '../utils';
 
 export default class Textarea {
-  constructor() {
+  constructor(textareaValue) {
     this.focus = false;
+    this.value = textareaValue;
   }
 
   render(rows) {
-    this.textarea = createElement('textarea', 'keyboard-input');
-    this.textarea.setAttribute('rows', rows);
-    // this.textarea.preventDefault();
+    this.node = createElement('textarea', 'keyboard-input');
+    this.node.setAttribute('rows', rows);
+    this.node.innerHTML = this.value;
     this.addFocusListener();
-    return this.textarea;
+    return this.node;
   }
 
   addFocusListener() {
-    this.textarea.addEventListener('mouseup', () => {
+    this.node.addEventListener('mouseup', () => {
       this.focus = true;
-      console.log(`Textarea focus = ${this.focus}`);
-    });
-    this.textarea.addEventListener('blur', () => {
-      this.focus = false;
-      console.log(`Textarea focus = ${this.focus}`);
     });
   }
 }

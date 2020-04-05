@@ -4,8 +4,18 @@ import Textarea from './Textarea';
 
 export default class App {
   init(language) {
-    this.TEXTAREA = new Textarea();
-    this.KEYBOARD = new Keyboard(language);
+    if (window.localStorage.getItem('keyboardLocalData')) {
+      this.localData = JSON.parse(window.localStorage.getItem('keyboardLocalData'));
+    } else {
+      this.localData = {
+        language,
+        textareaValue: '',
+
+      };
+    }
+
+    this.TEXTAREA = new Textarea(this.localData.textareaValue);
+    this.KEYBOARD = new Keyboard(this.localData.language);
   }
 
   render(node) {
@@ -17,13 +27,21 @@ export default class App {
   // eslint-disable-next-line class-methods-use-this
   activate() {
     document.addEventListener('DOMContentLoaded', () => {
-      // this.TEXTAREA.activate();
       document.addEventListener('keydown', (event) => {
+        event.preventDefault();
         this.KEYBOARD.keyDown(event, this.TEXTAREA.focus);
+        if (this.TEXTAREA.focus) {
+          this.TEXTAREA.node.value += this.KEYBOARD.elements.keyPressed;
+        }
       });
       document.addEventListener('keyup', (event) => {
         this.KEYBOARD.keyUp(event);
       });
+    });
+    window.addEventListener('beforeunload', () => {
+      this.localData.textareaValue = this.TEXTAREA.node.value;
+      this.localData.language = this.KEYBOARD.properties.language;
+      window.localStorage.setItem('keyboardLocalData', JSON.stringify(this.localData));
     });
   }
 }

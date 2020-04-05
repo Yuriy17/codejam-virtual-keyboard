@@ -2,7 +2,7 @@ import { createElement } from '../utils';
 import database from '../buttons';
 
 class Keyboard {
-  constructor(language) {
+  constructor(language = 'ENGLISH') {
     this.elements = {
       keysContainer: null,
       keys: database.buttons,
@@ -121,7 +121,6 @@ class Keyboard {
         if (textAreaFocus) {
           if (element.type === 'CHAR') {
             this.elements.keyPressed = element[language].default;
-            console.log(this.elements.keyPressed);
           }
         }
       }
@@ -160,10 +159,9 @@ class Keyboard {
 
   changeLanguage() {
     this.properties.language = this.properties.language === 'ENGLISH' ? 'RUSSIAN' : 'ENGLISH';
-    console.log(this.properties.language);
     const { language } = this.properties;
     this.elements.keys.forEach((element, index) => {
-      if (element[language]) {
+      if (element[language] && element.code !== 'Tab') {
         this.elements.keysNodes[index].innerHTML = element[language].default;
       }
     });
