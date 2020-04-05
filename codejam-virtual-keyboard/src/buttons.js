@@ -328,8 +328,7 @@ const buttons = [
   },
   {
     type: 'CONTROL',
-    code: 'MetaLeft',
-    title: 'OS',
+    title: 'Language',
   },
   {
     type: 'CONTROL',

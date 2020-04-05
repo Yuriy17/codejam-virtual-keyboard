@@ -19,7 +19,7 @@ export default class App {
     document.addEventListener('DOMContentLoaded', () => {
       // this.TEXTAREA.activate();
       document.addEventListener('keydown', (event) => {
-        this.KEYBOARD.keyDown(event);
+        this.KEYBOARD.keyDown(event, this.TEXTAREA.focus);
       });
       document.addEventListener('keyup', (event) => {
         this.KEYBOARD.keyUp(event);
