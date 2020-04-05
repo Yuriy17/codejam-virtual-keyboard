@@ -24,7 +24,6 @@ export default class App {
     node.appendChild(this.MAIN);
   }
 
-  // eslint-disable-next-line class-methods-use-this
   activate() {
     document.addEventListener('DOMContentLoaded', () => {
       document.addEventListener('keydown', (event) => {
@@ -36,6 +35,12 @@ export default class App {
       });
       document.addEventListener('keyup', (event) => {
         this.KEYBOARD.keyUp(event);
+      });
+      this.KEYBOARD.elements.keysContainer.addEventListener('mouseup', (event) => {
+        if (event.target.classList.contains('keyboard__key')) {
+          this.KEYBOARD.mouseup(event.target);
+          this.TEXTAREA.node.value += this.KEYBOARD.elements.keyPressed;
+        }
       });
     });
     window.addEventListener('beforeunload', () => {

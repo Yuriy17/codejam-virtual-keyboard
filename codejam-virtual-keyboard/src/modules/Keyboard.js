@@ -156,6 +156,10 @@ class Keyboard {
     }
   }
 
+  mouseup(button) {
+    this.elements.keyPressed = button.textContent;
+  }
+
 
   changeLanguage() {
     this.properties.language = this.properties.language === 'ENGLISH' ? 'RUSSIAN' : 'ENGLISH';
