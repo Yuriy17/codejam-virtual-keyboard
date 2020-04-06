@@ -27,32 +27,73 @@ export default class App {
     document.addEventListener('DOMContentLoaded', () => {
       document.addEventListener('keydown', (event) => {
         event.preventDefault();
-        this.KEYBOARD.keyDown(event);
-
-        this.TEXTAREA.node.value += this.KEYBOARD.elements.keyPressed;
-      });
-      document.addEventListener('keyup', (event) => {
-        switch (this.KEYBOARD.keyUp(event)) {
+        switch (this.KEYBOARD.keyDown(event)) {
           case 'Backspace':
             this.TEXTAREA.node.value = this.TEXTAREA.node.value.slice(0, -1);
             break;
 
+          case 'Enter':
+            this.TEXTAREA.node.value += '\n';
+            break;
           default:
+            this.TEXTAREA.node.value += this.KEYBOARD.elements.keyPressed;
+            this.KEYBOARD.elements.keyPressed = '';
             break;
         }
       });
-      this.KEYBOARD.elements.keysContainer.addEventListener('mouseup', (event) => {
-        if (event.target.classList.contains('keyboard__key')) {
-          this.KEYBOARD.mouseUp(event.target);
-          this.TEXTAREA.node.value += this.KEYBOARD.elements.keyPressed;
-        }
+
+      document.addEventListener('keyup', (event) => {
+        this.KEYBOARD.keyUp(event);
       });
+
+      let removePressedClass = true;
       this.KEYBOARD.elements.keysContainer.addEventListener('mousedown', (event) => {
         if (event.target.classList.contains('keyboard__key')) {
-          this.KEYBOARD.mouseDown(event.target);
+          event.target.classList.add('keyboard__key-pressed');
+          this.pressedButton = event.target;
+          const keyText = event.target.textContent;
+          switch (keyText) {
+            case 'Enter':
+              this.TEXTAREA.node.value += '\n';
+              break;
+            case 'Tab':
+              this.TEXTAREA.node.value += '\t';
+              break;
+            case 'Backspace':
+              this.TEXTAREA.node.value = this.TEXTAREA.node.value.slice(0, -1);
+              break;
+            case 'Caps lock':
+              removePressedClass = !this.KEYBOARD.capsToggle();
+              break;
+            case 'Alt':
+
+              break;
+            case 'Ctrl':
+
+              break;
+            case 'Shift':
+
+              break;
+            case 'Delete':
+
+              break;
+
+
+            default:
+              this.TEXTAREA.node.value += keyText;
+              break;
+          }
+        }
+      });
+
+      this.KEYBOARD.elements.keysContainer.addEventListener('mouseup', () => {
+        if (!(this.pressedButton.textContent === 'Caps lock') || removePressedClass) {
+          this.pressedButton.classList.remove('keyboard__key-pressed');
         }
       });
     });
+
+
     window.addEventListener('beforeunload', () => {
       this.localData.textareaValue = this.TEXTAREA.node.value;
       this.localData.language = this.KEYBOARD.properties.language;

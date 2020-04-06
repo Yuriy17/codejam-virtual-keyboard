@@ -10,14 +10,8 @@ class Keyboard {
       keyPressed: null,
     };
 
-    this.eventHandlers = {
-      onMouseInput: null,
-      onKeyboardInput: null,
-    };
-
     this.properties = {
       language,
-      value: '',
       capsLock: false,
       altKey: false,
       shiftKey: false,
@@ -114,9 +108,6 @@ class Keyboard {
 
   // eslint-disable-next-line consistent-return
   keyDown(event) {
-    if (event.code === 'Backspace') {
-      return 'Backspace';
-    }
     const { language, altKey, shiftKey } = this.properties;
 
     this.elements.keys.forEach((element, index) => {
@@ -128,7 +119,12 @@ class Keyboard {
         }
       }
     });
-
+    if (event.code === 'Backspace'
+    || event.code === 'Enter'
+    || event.code === 'Delete'
+    || event.code.substring(0, 5) === 'Arrow') {
+      return event.code;
+    }
 
     const isCurrentShift = !!(event.code === 'ShiftLeft' || event.code === 'ShiftRight');
     const isCurrentAlt = !!(event.code === 'AltLeft' || event.code === 'AltRight');
@@ -175,42 +171,20 @@ class Keyboard {
     }
   }
 
-  mouseUp(clickedButton) {
+  capsToggle() {
     const { language } = this.properties;
-    const { keys, keysNodes } = this.elements;
-    switch (clickedButton.textContent) {
-      case 'Caps lock':
-        clickedButton.classList.toggle('keyboard__key-pressed');
-        this.elements.keyPressed = '';
-
-        keys.forEach((element, index) => {
-          if (element[language] && element.code !== 'Tab') {
-            keysNodes[index].innerHTML = clickedButton.classList.contains('keyboard__key-pressed')
-              ? element[language].shift : element[language].default;
-          }
-        });
-        break;
-
-      default:
+    const { keys } = this.elements;
+    this.properties.capsLock = !this.properties.capsLock;
+    keys.forEach((element, index) => {
+      if (element[language] && (element.code !== 'Tab')) {
+        const keysNode = this.elements.keysNodes[index];
+        keysNode.innerHTML = this.properties.capsLock
+          ? element[language].shift : element[language].default;
+      }
+    });
 
 
-        clickedButton.classList.remove('keyboard__key-pressed');
-        this.elements.keyPressed = clickedButton.textContent;
-        break;
-    }
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  mouseDown(clickedButton) {
-    switch (clickedButton.textContent) {
-      case 'Caps lock':
-
-        break;
-
-      default:
-        clickedButton.classList.add('keyboard__key-pressed');
-        break;
-    }
+    return this.properties.capsLock;
   }
 
   changeLanguage() {
