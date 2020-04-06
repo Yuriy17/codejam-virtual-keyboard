@@ -10,7 +10,6 @@ export default class App {
       this.localData = {
         language,
         textareaValue: '',
-
       };
     }
 
@@ -28,18 +27,29 @@ export default class App {
     document.addEventListener('DOMContentLoaded', () => {
       document.addEventListener('keydown', (event) => {
         event.preventDefault();
-        this.KEYBOARD.keyDown(event, this.TEXTAREA.focus);
-        if (this.TEXTAREA.focus) {
-          this.TEXTAREA.node.value += this.KEYBOARD.elements.keyPressed;
-        }
+        this.KEYBOARD.keyDown(event);
+
+        this.TEXTAREA.node.value += this.KEYBOARD.elements.keyPressed;
       });
       document.addEventListener('keyup', (event) => {
-        this.KEYBOARD.keyUp(event);
+        switch (this.KEYBOARD.keyUp(event)) {
+          case 'Backspace':
+            this.TEXTAREA.node.value = this.TEXTAREA.node.value.slice(0, -1);
+            break;
+
+          default:
+            break;
+        }
       });
       this.KEYBOARD.elements.keysContainer.addEventListener('mouseup', (event) => {
         if (event.target.classList.contains('keyboard__key')) {
-          this.KEYBOARD.mouseup(event.target);
+          this.KEYBOARD.mouseUp(event.target);
           this.TEXTAREA.node.value += this.KEYBOARD.elements.keyPressed;
+        }
+      });
+      this.KEYBOARD.elements.keysContainer.addEventListener('mousedown', (event) => {
+        if (event.target.classList.contains('keyboard__key')) {
+          this.KEYBOARD.mouseDown(event.target);
         }
       });
     });

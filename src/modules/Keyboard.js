@@ -112,19 +112,23 @@ class Keyboard {
     return nodeRows;
   }
 
-  keyDown(event, textAreaFocus = false) {
+  // eslint-disable-next-line consistent-return
+  keyDown(event) {
+    if (event.code === 'Backspace') {
+      return 'Backspace';
+    }
     const { language, altKey, shiftKey } = this.properties;
+
     this.elements.keys.forEach((element, index) => {
       if (element.code === event.code) {
-        this.elements.keysNodes[index].classList.add('keyboard__key-pressed');
+        this.elements.keysNodes[index].classList.toggle('keyboard__key-pressed');
 
-        if (textAreaFocus) {
-          if (element.type === 'CHAR') {
-            this.elements.keyPressed = element[language].default;
-          }
+        if (element.type === 'CHAR') {
+          this.elements.keyPressed = element[language].default;
         }
       }
     });
+
 
     const isCurrentShift = !!(event.code === 'ShiftLeft' || event.code === 'ShiftRight');
     const isCurrentAlt = !!(event.code === 'AltLeft' || event.code === 'AltRight');
@@ -142,10 +146,25 @@ class Keyboard {
   }
 
   keyUp(event) {
-    const { altKey, shiftKey } = this.properties;
-    this.elements.keys.forEach((element, index) => {
+    const { language, altKey, shiftKey } = this.properties;
+    const { keysNodes, keys } = this.elements;
+    let { keyPressed } = this.elements;
+
+    if (keyPressed) { keyPressed = ''; }
+
+    keys.forEach((element, index) => {
       if (element.code === event.code) {
-        this.elements.keysNodes[index].classList.remove('keyboard__key-pressed');
+        const currentNode = keysNodes[index];
+
+
+        if (event.code === 'CapsLock') {
+          if (element[language] && element.code !== 'Tab') {
+            currentNode.innerHTML = keysNodes[index].classList.contains('keyboard__key-pressed')
+              ? element[language].shift : element[language].default;
+          }
+        } else {
+          currentNode.classList.remove('keyboard__key-pressed');
+        }
       }
     });
 
@@ -156,17 +175,53 @@ class Keyboard {
     }
   }
 
-  mouseup(button) {
-    this.elements.keyPressed = button.textContent;
+  mouseUp(clickedButton) {
+    const { language } = this.properties;
+    const { keys, keysNodes } = this.elements;
+    switch (clickedButton.textContent) {
+      case 'Caps lock':
+        clickedButton.classList.toggle('keyboard__key-pressed');
+        this.elements.keyPressed = '';
+
+        keys.forEach((element, index) => {
+          if (element[language] && element.code !== 'Tab') {
+            keysNodes[index].innerHTML = clickedButton.classList.contains('keyboard__key-pressed')
+              ? element[language].shift : element[language].default;
+          }
+        });
+        break;
+
+      default:
+
+
+        clickedButton.classList.remove('keyboard__key-pressed');
+        this.elements.keyPressed = clickedButton.textContent;
+        break;
+    }
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  mouseDown(clickedButton) {
+    switch (clickedButton.textContent) {
+      case 'Caps lock':
+
+        break;
+
+      default:
+        clickedButton.classList.add('keyboard__key-pressed');
+        break;
+    }
+  }
 
   changeLanguage() {
     this.properties.language = this.properties.language === 'ENGLISH' ? 'RUSSIAN' : 'ENGLISH';
+
     const { language } = this.properties;
-    this.elements.keys.forEach((element, index) => {
+    const { keys, keysNodes } = this.elements;
+
+    keys.forEach((element, index) => {
       if (element[language] && element.code !== 'Tab') {
-        this.elements.keysNodes[index].innerHTML = element[language].default;
+        keysNodes[index].innerHTML = element[language].default;
       }
     });
   }
