@@ -48,9 +48,16 @@ export default class App {
 
       let removePressedClass = true;
       this.KEYBOARD.elements.keysContainer.addEventListener('mousedown', (event) => {
-        if (event.target.classList.contains('keyboard__key')) {
-          event.target.classList.add('keyboard__key-pressed');
-          this.pressedButton = event.target;
+        const ancestorKey = event.target.closest('.keyboard__key');
+        if (event.target.classList.contains('keyboard__key')
+        || ancestorKey) {
+          if (ancestorKey) {
+            ancestorKey.classList.add('keyboard__key-pressed');
+            this.pressedButton = ancestorKey;
+          } else {
+            event.target.classList.add('keyboard__key-pressed');
+            this.pressedButton = event.target;
+          }
           const keyText = event.target.textContent;
           switch (keyText) {
             case 'Enter':
@@ -64,6 +71,21 @@ export default class App {
               break;
             case 'Caps lock':
               removePressedClass = !this.KEYBOARD.capsToggle();
+              break;
+            case 'language':
+              this.KEYBOARD.changeLanguage();
+              break;
+            case 'arrow_right':
+              this.TEXTAREA.node.value += '→';
+              break;
+            case 'arrow_left':
+              this.TEXTAREA.node.value += '←';
+              break;
+            case 'arrow_drop_up':
+              this.TEXTAREA.node.value += '↑';
+              break;
+            case 'arrow_drop_down':
+              this.TEXTAREA.node.value += '↓';
               break;
             case 'Alt':
 
