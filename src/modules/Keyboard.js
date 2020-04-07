@@ -108,20 +108,24 @@ class Keyboard {
 
   // eslint-disable-next-line consistent-return
   keyDown(event) {
-    const { language, altKey, shiftKey } = this.properties;
+    const { altKey, shiftKey } = this.properties;
 
     this.elements.keys.forEach((element, index) => {
       if (element.code === event.code) {
         this.elements.keysNodes[index].classList.toggle('keyboard__key-pressed');
 
         if (element.type === 'CHAR') {
-          this.elements.keyPressed = element[language].default;
+          this.elements.keyPressed = this.elements.keysNodes[index].innerHTML;
         }
       }
     });
     if (event.code === 'Backspace'
     || event.code === 'Enter'
     || event.code === 'Delete'
+    || event.code === 'CapsLock'
+    || event.code === 'Tab'
+    || event.code === 'ControlLeft'
+    || event.code === 'ControlRight'
     || event.code.substring(0, 5) === 'Arrow') {
       return event.code;
     }
@@ -142,7 +146,7 @@ class Keyboard {
   }
 
   keyUp(event) {
-    const { language, altKey, shiftKey } = this.properties;
+    const { altKey, shiftKey } = this.properties;
     const { keysNodes, keys } = this.elements;
     let { keyPressed } = this.elements;
 
@@ -151,13 +155,8 @@ class Keyboard {
     keys.forEach((element, index) => {
       if (element.code === event.code) {
         const currentNode = keysNodes[index];
-
-
         if (event.code === 'CapsLock') {
-          if (element[language] && element.code !== 'Tab') {
-            currentNode.innerHTML = keysNodes[index].classList.contains('keyboard__key-pressed')
-              ? element[language].shift : element[language].default;
-          }
+          this.capsToggle();
         } else {
           currentNode.classList.remove('keyboard__key-pressed');
         }
@@ -182,20 +181,18 @@ class Keyboard {
           ? element[language].shift : element[language].default;
       }
     });
-
-
     return this.properties.capsLock;
   }
 
   changeLanguage() {
     this.properties.language = this.properties.language === 'ENGLISH' ? 'RUSSIAN' : 'ENGLISH';
 
-    const { language } = this.properties;
+    const { language, capsLock } = this.properties;
     const { keys, keysNodes } = this.elements;
 
     keys.forEach((element, index) => {
       if (element[language] && element.code !== 'Tab') {
-        keysNodes[index].innerHTML = element[language].default;
+        keysNodes[index].innerHTML = capsLock ? element[language].shift : element[language].default;
       }
     });
   }

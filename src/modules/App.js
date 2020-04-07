@@ -25,21 +25,51 @@ export default class App {
 
   activate() {
     document.addEventListener('DOMContentLoaded', () => {
+      this.TEXTAREA.node.focus();
       document.addEventListener('keydown', (event) => {
         event.preventDefault();
         switch (this.KEYBOARD.keyDown(event)) {
           case 'Backspace':
-            this.TEXTAREA.node.value = this.TEXTAREA.node.value.slice(0, -1);
+            this.TEXTAREA.backspace();
             break;
 
-          case 'Enter':
-            this.TEXTAREA.node.value += '\n';
+
+          case 'Delete':
+            this.TEXTAREA.delete();
             break;
+          case 'Tab':
+            this.TEXTAREA.addChar('\t');
+            break;
+          case 'Enter':
+            this.TEXTAREA.addChar('\n');
+            break;
+          case 'ArrowRight':
+            this.TEXTAREA.addChar('→');
+            break;
+          case 'ArrowLeft':
+            this.TEXTAREA.addChar('←');
+            break;
+
+          case 'ArrowUp':
+            this.TEXTAREA.addChar('↑');
+            break;
+          case 'ArrowDown':
+            this.TEXTAREA.addChar('↓');
+            break;
+          case 'ControlLeft':
+          case 'ControlRight':
+          case 'CapsLock':
+            break;
+
           default:
-            this.TEXTAREA.node.value += this.KEYBOARD.elements.keyPressed;
-            this.KEYBOARD.elements.keyPressed = '';
+            if (this.KEYBOARD.elements.keyPressed) {
+              this.TEXTAREA.addChar(this.KEYBOARD.elements.keyPressed);
+              this.KEYBOARD.elements.keyPressed = '';
+            }
             break;
         }
+        this.TEXTAREA.value = this.TEXTAREA.node.value;
+        this.TEXTAREA.node.selectionEnd = this.TEXTAREA.selectionStart;
       });
 
       document.addEventListener('keyup', (event) => {
@@ -60,14 +90,11 @@ export default class App {
           }
           const keyText = event.target.textContent;
           switch (keyText) {
-            case 'Enter':
-              this.TEXTAREA.node.value += '\n';
-              break;
-            case 'Tab':
-              this.TEXTAREA.node.value += '\t';
-              break;
             case 'Backspace':
-              this.TEXTAREA.node.value = this.TEXTAREA.node.value.slice(0, -1);
+              this.TEXTAREA.backspace();
+              break;
+            case 'Del':
+              this.TEXTAREA.delete();
               break;
             case 'Caps lock':
               removePressedClass = !this.KEYBOARD.capsToggle();
@@ -75,34 +102,33 @@ export default class App {
             case 'language':
               this.KEYBOARD.changeLanguage();
               break;
+            case 'Enter':
+              this.TEXTAREA.addChar('\n');
+              break;
+            case 'Tab':
+              this.TEXTAREA.addChar('\t');
+              break;
             case 'arrow_right':
-              this.TEXTAREA.node.value += '→';
+              this.TEXTAREA.addChar('→');
               break;
             case 'arrow_left':
-              this.TEXTAREA.node.value += '←';
+              this.TEXTAREA.addChar('←');
               break;
             case 'arrow_drop_up':
-              this.TEXTAREA.node.value += '↑';
+              this.TEXTAREA.addChar('↑');
               break;
             case 'arrow_drop_down':
-              this.TEXTAREA.node.value += '↓';
+              this.TEXTAREA.addChar('↓');
               break;
+
+
             case 'Alt':
-
-              break;
             case 'Ctrl':
-
-              break;
             case 'Shift':
-
               break;
-            case 'Delete':
-
-              break;
-
 
             default:
-              this.TEXTAREA.node.value += keyText;
+              this.TEXTAREA.addChar(keyText);
               break;
           }
         }
@@ -112,6 +138,17 @@ export default class App {
         if (!(this.pressedButton.textContent === 'Caps lock') || removePressedClass) {
           this.pressedButton.classList.remove('keyboard__key-pressed');
         }
+      });
+
+      this.TEXTAREA.node.addEventListener('mouseup', () => {
+        this.TEXTAREA.selectionStart = this.TEXTAREA.node.selectionStart;
+        this.TEXTAREA.value = this.TEXTAREA.node.value;
+      });
+
+      this.TEXTAREA.node.addEventListener('blur', () => {
+        this.TEXTAREA.node.focus();
+        this.TEXTAREA.node.selectionEnd = this.TEXTAREA.selectionStart;
+        this.TEXTAREA.value = this.TEXTAREA.node.value;
       });
     });
 
