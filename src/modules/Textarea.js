@@ -22,12 +22,18 @@ export default class Textarea {
   }
 
   backspace() {
-    this.node.value = this.value.substring(0, this.selectionStart - 1)
+    if (this.selectionStart >= 1) {
+      this.node.value = this.value.substring(0, this.selectionStart - 1)
     + this.value.substring(this.selectionStart, this.value.length);
-    this.selectionStart -= 1;
+      this.selectionStart -= 1;
+    }
   }
 
   addChar(symbol) {
+    // console.log(this.selectionStart);
+    // console.log(this.value);
+
+    // IF(this.selectionStart === )
     this.node.value = this.value.substring(0, this.selectionStart)
     + symbol
     + this.value.substring(this.selectionStart, this.value.length);

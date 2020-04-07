@@ -59,6 +59,7 @@ export default class App {
           case 'ControlLeft':
           case 'ControlRight':
           case 'CapsLock':
+            // this.TEXTAREA.selectionStart += 1;
             break;
 
           default:
