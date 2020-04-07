@@ -115,10 +115,25 @@ class Keyboard {
         this.elements.keysNodes[index].classList.toggle('keyboard__key-pressed');
 
         if (element.type === 'CHAR') {
-          this.elements.keyPressed = this.elements.keysNodes[index].innerHTML;
+          const char = this.elements.keysNodes[index].innerHTML;
+          switch (char) {
+            case '&amp;':
+              this.elements.keyPressed = '&';
+              break;
+            case '&lt;':
+              this.elements.keyPressed = '<';
+              break;
+            case '&gt;':
+              this.elements.keyPressed = '>';
+              break;
+            default:
+              this.elements.keyPressed = char;
+              break;
+          }
         }
       }
     });
+
     if (event.code === 'Backspace'
     || event.code === 'Enter'
     || event.code === 'Delete'
