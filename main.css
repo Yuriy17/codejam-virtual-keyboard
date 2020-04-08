@@ -76,6 +76,7 @@ a {
     .keyboard__key:hover {
       border-color: rgba(255, 255, 255, 0.8); }
     .keyboard__key-pressed {
+      transition: 0.1s all;
       background-color: #4ec5a5; }
     .keyboard__key .arrow {
       height: 10px; }
