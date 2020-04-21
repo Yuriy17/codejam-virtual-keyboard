@@ -5,7 +5,9 @@ import Textarea from './Textarea';
 export default class App {
   init(language) {
     if (window.localStorage.getItem('keyboardLocalData')) {
-      this.localData = JSON.parse(window.localStorage.getItem('keyboardLocalData'));
+      this.localData = JSON.parse(
+        window.localStorage.getItem('keyboardLocalData'),
+      );
     } else {
       this.localData = {
         language,
@@ -33,7 +35,6 @@ export default class App {
             this.TEXTAREA.backspace();
             break;
 
-
           case 'Delete':
             this.TEXTAREA.delete();
             break;
@@ -59,7 +60,6 @@ export default class App {
           case 'ControlLeft':
           case 'ControlRight':
           case 'CapsLock':
-            // this.TEXTAREA.selectionStart += 1;
             break;
 
           default:
@@ -78,65 +78,69 @@ export default class App {
       });
 
       let removePressedClass = true;
-      this.KEYBOARD.elements.keysContainer.addEventListener('mousedown', (event) => {
-        const ancestorKey = event.target.closest('.keyboard__key');
-        if (event.target.classList.contains('keyboard__key')
-        || ancestorKey) {
-          if (ancestorKey) {
-            ancestorKey.classList.add('keyboard__key-pressed');
-            this.pressedButton = ancestorKey;
-          } else {
-            event.target.classList.add('keyboard__key-pressed');
-            this.pressedButton = event.target;
+      this.KEYBOARD.elements.keysContainer.addEventListener(
+        'mousedown',
+        (event) => {
+          const ancestorKey = event.target.closest('.keyboard__key');
+          if (event.target.classList.contains('keyboard__key') || ancestorKey) {
+            if (ancestorKey) {
+              ancestorKey.classList.add('keyboard__key-pressed');
+              this.pressedButton = ancestorKey;
+            } else {
+              event.target.classList.add('keyboard__key-pressed');
+              this.pressedButton = event.target;
+            }
+            const keyText = event.target.textContent;
+            switch (keyText) {
+              case 'Backspace':
+                this.TEXTAREA.backspace();
+                break;
+              case 'Del':
+                this.TEXTAREA.delete();
+                break;
+              case 'Caps lock':
+                removePressedClass = !this.KEYBOARD.capsToggle();
+                break;
+              case 'language':
+                this.KEYBOARD.changeLanguage();
+                break;
+              case 'Enter':
+                this.TEXTAREA.addChar('\n');
+                break;
+              case 'Tab':
+                this.TEXTAREA.addChar('\t');
+                break;
+              case 'arrow_right':
+                this.TEXTAREA.addChar('→');
+                break;
+              case 'arrow_left':
+                this.TEXTAREA.addChar('←');
+                break;
+              case 'arrow_drop_up':
+                this.TEXTAREA.addChar('↑');
+                break;
+              case 'arrow_drop_down':
+                this.TEXTAREA.addChar('↓');
+                break;
+
+              case 'Alt':
+              case 'Ctrl':
+              case 'Shift':
+                break;
+
+              default:
+                this.TEXTAREA.addChar(keyText);
+                break;
+            }
           }
-          const keyText = event.target.textContent;
-          switch (keyText) {
-            case 'Backspace':
-              this.TEXTAREA.backspace();
-              break;
-            case 'Del':
-              this.TEXTAREA.delete();
-              break;
-            case 'Caps lock':
-              removePressedClass = !this.KEYBOARD.capsToggle();
-              break;
-            case 'language':
-              this.KEYBOARD.changeLanguage();
-              break;
-            case 'Enter':
-              this.TEXTAREA.addChar('\n');
-              break;
-            case 'Tab':
-              this.TEXTAREA.addChar('\t');
-              break;
-            case 'arrow_right':
-              this.TEXTAREA.addChar('→');
-              break;
-            case 'arrow_left':
-              this.TEXTAREA.addChar('←');
-              break;
-            case 'arrow_drop_up':
-              this.TEXTAREA.addChar('↑');
-              break;
-            case 'arrow_drop_down':
-              this.TEXTAREA.addChar('↓');
-              break;
-
-
-            case 'Alt':
-            case 'Ctrl':
-            case 'Shift':
-              break;
-
-            default:
-              this.TEXTAREA.addChar(keyText);
-              break;
-          }
-        }
-      });
+        },
+      );
 
       this.KEYBOARD.elements.keysContainer.addEventListener('mouseup', () => {
-        if (!(this.pressedButton.textContent === 'Caps lock') || removePressedClass) {
+        if (
+          !(this.pressedButton.textContent === 'Caps lock')
+          || removePressedClass
+        ) {
           this.pressedButton.classList.remove('keyboard__key-pressed');
         }
       });
@@ -153,11 +157,13 @@ export default class App {
       });
     });
 
-
     window.addEventListener('beforeunload', () => {
       this.localData.textareaValue = this.TEXTAREA.node.value;
       this.localData.language = this.KEYBOARD.properties.language;
-      window.localStorage.setItem('keyboardLocalData', JSON.stringify(this.localData));
+      window.localStorage.setItem(
+        'keyboardLocalData',
+        JSON.stringify(this.localData),
+      );
     });
   }
 }

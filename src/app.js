@@ -3,7 +3,9 @@ import App from './modules/App';
 import './favicon.ico';
 
 const VirtualKeyboard = new App();
-VirtualKeyboard.init('ENGLISH');
+VirtualKeyboard.init(
+  'ENGLISH',
+);
 VirtualKeyboard.render(document.body);
 VirtualKeyboard.activate();
 document.body.querySelector('main').insertAdjacentHTML('beforeend',

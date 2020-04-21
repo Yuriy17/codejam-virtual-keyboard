@@ -18,7 +18,6 @@ class Keyboard {
     };
   }
 
-
   render() {
     const keyboardFragment = document.createDocumentFragment();
     this.elements.keysContainer = createElement('div', 'keyboard');
@@ -41,13 +40,17 @@ class Keyboard {
       switch (element.type) {
         case 'CONTROL':
           button.innerHTML = element.title === 'Language'
-            ? '<i class="material-icons">language</i>' : element.title;
+            ? '<i class="material-icons">language</i>'
+            : element.title;
 
           currentRow.append(button);
           if (element.code === 'ShiftRight') {
             button.classList.add('keyboard__key-medium');
             nodeRows.push(createElement('div', 'keyboard__row'));
-          } else if (element.code === 'ShiftLeft' || element.code === 'CapsLock') {
+          } else if (
+            element.code === 'ShiftLeft'
+            || element.code === 'CapsLock'
+          ) {
             button.classList.add('keyboard__key-medium');
           } else {
             button.classList.add('keyboard__key-small');
@@ -55,9 +58,17 @@ class Keyboard {
           break;
 
         case 'NAVIGATION':
-          if (element.code === 'Backspace' || element.code === 'Enter' || element.code === 'Delete') {
+          if (
+            element.code === 'Backspace'
+            || element.code === 'Enter'
+            || element.code === 'Delete'
+          ) {
             currentRow.append(button);
-            button.classList.add(element.code === 'Delete' ? 'keyboard__key-small' : 'keyboard__key-large');
+            button.classList.add(
+              element.code === 'Delete'
+                ? 'keyboard__key-small'
+                : 'keyboard__key-large',
+            );
             button.innerHTML = element.title;
             nodeRows.push(createElement('div', 'keyboard__row'));
           } else {
@@ -112,7 +123,9 @@ class Keyboard {
 
     this.elements.keys.forEach((element, index) => {
       if (element.code === event.code) {
-        this.elements.keysNodes[index].classList.toggle('keyboard__key-pressed');
+        this.elements.keysNodes[index].classList.toggle(
+          'keyboard__key-pressed',
+        );
 
         if (element.type === 'CHAR') {
           const char = this.elements.keysNodes[index].innerHTML;
@@ -134,23 +147,34 @@ class Keyboard {
       }
     });
 
-    if (event.code === 'Backspace'
-    || event.code === 'Enter'
-    || event.code === 'Delete'
-    || event.code === 'CapsLock'
-    || event.code === 'Tab'
-    || event.code === 'ControlLeft'
-    || event.code === 'ControlRight'
-    || event.code.substring(0, 5) === 'Arrow') {
+    if (
+      event.code === 'Backspace'
+      || event.code === 'Enter'
+      || event.code === 'Delete'
+      || event.code === 'CapsLock'
+      || event.code === 'Tab'
+      || event.code === 'ControlLeft'
+      || event.code === 'ControlRight'
+      || event.code.substring(0, 5) === 'Arrow'
+    ) {
       return event.code;
     }
 
-    const isCurrentShift = !!(event.code === 'ShiftLeft' || event.code === 'ShiftRight');
-    const isCurrentAlt = !!(event.code === 'AltLeft' || event.code === 'AltRight');
+    const isCurrentShift = !!(
+      event.code === 'ShiftLeft' || event.code === 'ShiftRight'
+    );
+    const isCurrentAlt = !!(
+      event.code === 'AltLeft' || event.code === 'AltRight'
+    );
     if (altKey && !shiftKey && isCurrentShift && event.key === 'GroupNext') {
       this.properties.shiftKey = true;
       this.changeLanguage();
-    } else if (shiftKey && !altKey && isCurrentAlt && event.key === 'GroupNext') {
+    } else if (
+      shiftKey
+      && !altKey
+      && isCurrentAlt
+      && event.key === 'GroupNext'
+    ) {
       this.properties.altKey = true;
       this.changeLanguage();
     } else if (isCurrentAlt && !altKey) {
@@ -165,7 +189,9 @@ class Keyboard {
     const { keysNodes, keys } = this.elements;
     let { keyPressed } = this.elements;
 
-    if (keyPressed) { keyPressed = ''; }
+    if (keyPressed) {
+      keyPressed = '';
+    }
 
     keys.forEach((element, index) => {
       if (element.code === event.code) {
@@ -180,7 +206,10 @@ class Keyboard {
 
     if ((event.code === 'AltLeft' || event.code === 'AltRight') && altKey) {
       this.properties.altKey = false;
-    } else if ((event.code === 'ShiftLeft' || event.code === 'ShiftRight') && shiftKey) {
+    } else if (
+      (event.code === 'ShiftLeft' || event.code === 'ShiftRight')
+      && shiftKey
+    ) {
       this.properties.shiftKey = false;
     }
   }
@@ -190,10 +219,11 @@ class Keyboard {
     const { keys } = this.elements;
     this.properties.capsLock = !this.properties.capsLock;
     keys.forEach((element, index) => {
-      if (element[language] && (element.code !== 'Tab')) {
+      if (element[language] && element.code !== 'Tab') {
         const keysNode = this.elements.keysNodes[index];
         keysNode.innerHTML = this.properties.capsLock
-          ? element[language].shift : element[language].default;
+          ? element[language].shift
+          : element[language].default;
       }
     });
     return this.properties.capsLock;
@@ -207,7 +237,9 @@ class Keyboard {
 
     keys.forEach((element, index) => {
       if (element[language] && element.code !== 'Tab') {
-        keysNodes[index].innerHTML = capsLock ? element[language].shift : element[language].default;
+        keysNodes[index].innerHTML = capsLock
+          ? element[language].shift
+          : element[language].default;
       }
     });
   }
